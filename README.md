@@ -8,7 +8,7 @@
 ## **Prerequisites**
 - Streamlink 6.8.0
 - FFmpeg
-- Python 3.12.2
+- Python 3.12
 
 ## **Environment Variables**
 | ENV Name | Description |
