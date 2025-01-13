@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 logger = logging.getLogger('streamlink_logger')
-logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(asctime)s %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
+logging.basicConfig(level=logging.INFO, format="[%(asctime)s] [%(levelname)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
 
 CHANNEL_ID = os.getenv('CHANNEL_ID')
 NID_AUT = os.getenv('NID_AUT')
@@ -37,7 +37,7 @@ def check_naver_status():
 
 def run_streamlink(CHANNEL_ID):
     try:
-        logger.info(f"치지직 라이브 녹화를 시작합니다!")
+        logger.info(f"Recording live broadcast from Chzzk!")
         response = requests.get(CHZZK_API, headers=headers)
         title = response.json().get('content', {}).get('liveTitle')
         cleaned_live_title = special_chars_remover.sub('', title.rstrip())
@@ -46,7 +46,7 @@ def run_streamlink(CHANNEL_ID):
         suffix = f"{current_time}_{channel}_{cleaned_live_title}"
         subprocess.call(['streamlink', '--ffmpeg-copyts', '--progress', 'no', f'https://chzzk.naver.com/live/{CHANNEL_ID}', 'best', '--http-cookie', f'NID_AUT={NID_AUT}', '--http-cookie', f'NID_SES={NID_SES}', '--output', f'/home/callisto/CHZZK-VOD/{suffix}.mp4'])
     except Exception as e:
-        logger.error(f"Streamlink 실행 중 오류 발생: {e}")
+        logger.error(f"Streamlink > An error occurred while running: {e}")
 
 def check_stream():
     while True:
@@ -55,8 +55,8 @@ def check_stream():
             response = requests.get(CHZZK_API, headers=headers)
             title = response.json().get('content', {}).get('liveTitle')
             channel = response.json().get('content', {}).get('channel').get('channelName')
-            logger.info(f'[치지직 라이브] {channel}님의 방송이 시작되었습니다!')
-            logger.info(f'방송 제목: {title}')
+            logger.info(f'{channel} broadcast has started!')
+            logger.info(f'Broadcast title: {title}')
             logger.info(f'https://chzzk.naver.com/live/{CHANNEL_ID}')
             run_streamlink(CHANNEL_ID)
             while check_naver_status() == 'OPEN':
