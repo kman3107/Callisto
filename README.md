@@ -6,9 +6,9 @@
 녹화 중에는 10초마다 방송 상태를 확인하여 자동으로 녹화를 중단합니다.
 
 ## **Prerequisites**
-- Streamlink 7.1.2
+- Streamlink 7.1.3
 - FFmpeg
-- Python 3.12
+- Python 3.12.x
 
 ## **Environment Variables**
 | ENV Name | Description |
