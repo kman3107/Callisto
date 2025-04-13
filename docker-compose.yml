@@ -1,4 +1,4 @@
-version: "3.3"
+version: "3.8"
 services:
   callisto:
     container_name: callisto
@@ -6,5 +6,20 @@ services:
     restart: unless-stopped
     env_file:
       - ./default.env
+    networks:
+      - callisto
     volumes:
       - /volume1/docker/callisto/CHZZK-VOD:/home/callisto/CHZZK-VOD
+    command: ["python3", "/home/callisto/callisto.py"]
+  callisto-ffmpeg:
+    image: yck1406/callisto:latest
+    container_name: callisto-ffmpeg
+    restart: unless-stopped
+    networks:
+      - callisto
+    volumes:
+      -  /volume1/docker/callisto/CHZZK-VOD:/home/callisto/CHZZK-VOD
+    command: ["python3", "/home/callisto/callisto_ffmpeg.py"]
+networks:
+  callisto:
+    driver: bridge
